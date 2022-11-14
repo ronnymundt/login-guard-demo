@@ -14,7 +14,7 @@ export class LoginGuard implements CanActivate {
     private _store: Store<ILoginState>
     ) { }
 
-  canActivate(): Observable<boolean> { 
+  canActivate(): Observable<boolean> {
     return this._store.select(SelectLogin).pipe(map((x: ILoginState) => x.isSuccess));
   }  
 }

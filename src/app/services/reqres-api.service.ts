@@ -28,7 +28,7 @@ export class ReqresApiService {
    * 
    * @returns 
    */
-  public setLogout(): Observable<{}> {
+  public setLogout$(): Observable<{}> {  
     return this._httpClient.post<{}>(EReqresApiUrl.logout, null);
   }
 }

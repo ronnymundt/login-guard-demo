@@ -54,6 +54,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   // EVENTS
 
+  /**
+   * Button onclick event
+   */
   public onLoginClick(): void {
     const frm = <ILoginEmailPassword>this.loginForm.value; 
     this._loginStore.dispatch(LoginActions.getLoginToken(frm));    

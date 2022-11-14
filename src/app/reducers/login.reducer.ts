@@ -1,4 +1,4 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { LoginActions } from '../actions/login.actions';
 import { ILoginState } from '../interfaces/login.interface';
 
@@ -30,6 +30,12 @@ export const LoginReducer = createReducer(
     LoginActions.setLoginError,
     (state: ILoginState, { error }) => {
       return { ...state, token: null, isSuccess: false, isLoading: false, isError: true, error: error }
+    }
+  ),
+  on(
+    LoginActions.setLogout,
+    (state: ILoginState) => {
+      return { ...state, isLoading: false, error: null, isError: false, isSuccess: false, token: null }
     }
   )
 );
