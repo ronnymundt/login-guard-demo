@@ -2,6 +2,7 @@ export interface ILoginState {
     token: string | null,    
     error: string | null,
     isSuccess: boolean,
+    isError: boolean,
     isLoading: boolean
 }
 

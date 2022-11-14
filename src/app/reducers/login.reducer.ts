@@ -6,9 +6,10 @@ export const loginFeatureKey = 'login';
 
 export const initialState: ILoginState = {
   token: null,
-  isSuccess: false,
+  isSuccess: false, 
+  isError: false,
+  isLoading: false,
   error: null,
-  isLoading: false
 };
 
 export const LoginReducer = createReducer(
@@ -16,13 +17,19 @@ export const LoginReducer = createReducer(
   on(
     LoginActions.getLoginToken,
     (state: ILoginState, { email, password }) => {
-      return { ...state, isLoading: true }
+      return { ...state, isLoading: true, error: null, isError: false, isSuccess: false, token: null }
     }
   ),
   on(
     LoginActions.setLoginToken,
     (state: ILoginState, { token, isSuccess, isLoading }) => {
-      return { ...state, token: token, isSuccess: isSuccess, isLoading: isLoading }
+      return { ...state, token: token, isSuccess: isSuccess, isLoading: isLoading, isError: false, error: null }
+    }
+  ),
+  on(
+    LoginActions.setLoginError,
+    (state: ILoginState, { error }) => {
+      return { ...state, token: null, isSuccess: false, isLoading: false, isError: true, error: error }
     }
   )
 );

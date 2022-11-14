@@ -12,4 +12,10 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // EVENTS
+
+  public onLogoutClick(): void {
+    
+  }
+
 }
