@@ -14,7 +14,7 @@ export class ReqresApiService {
   ) { }
 
   /**
-   * 
+   * Service liefert login token zurück.
    * @param email 
    * @param password 
    * @returns 
@@ -25,7 +25,7 @@ export class ReqresApiService {
   }
 
   /**
-   * 
+   * Service führt logout aus.
    * @returns 
    */
   public setLogout$(): Observable<{}> {  

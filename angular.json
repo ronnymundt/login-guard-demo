@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "guard-interceptor-demo": {
+    "login-guard-demo": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/guard-interceptor-demo",
+            "outputPath": "dist/login-guard-demo",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -70,10 +70,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "guard-interceptor-demo:build:production"
+              "browserTarget": "login-guard-demo:build:production"
             },
             "development": {
-              "browserTarget": "guard-interceptor-demo:build:development"
+              "browserTarget": "login-guard-demo:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -81,7 +81,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "guard-interceptor-demo:build"
+            "browserTarget": "login-guard-demo:build"
           }
         },
         "test": {
