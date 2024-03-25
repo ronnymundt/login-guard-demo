@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { LoginActions } from '../../actions/login.actions';
-import { ILoginState } from '../../interfaces/login.interface';
+import { MatButton } from '@angular/material/button';
+import {ILoginState, LoginActions} from "../../+state/login";
 
 @Component({
-  selector: 'bit-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: 'bit-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: true,
+    imports: [MatButton]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
   constructor(
     private _store: Store<ILoginState>
   ) { }
-
-  ngOnInit(): void { }
 
   // EVENTS
 
@@ -22,6 +22,6 @@ export class HomeComponent implements OnInit {
    * Button onclick event
    */
   public onLogoutClick(): void {
-    this._store.dispatch(LoginActions.getLogout());
+    this._store.dispatch(LoginActions.setLogout());
   }
 }

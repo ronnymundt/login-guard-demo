@@ -6,7 +6,6 @@ export const LoginActions = createActionGroup({
     'Get Login Token': props<{ email: string, password: string }>(),
     'Set Login Token': props<{ token: string, isSuccess: boolean, isLoading: boolean }>(),
     'Set Login Error': props<{ error: string }>(),
-    'Get Logout': emptyProps(),
     'Set Logout': emptyProps()
   }
 });

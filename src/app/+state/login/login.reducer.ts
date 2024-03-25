@@ -1,25 +1,19 @@
 import { createReducer, on } from '@ngrx/store';
-import { LoginActions } from '../actions/login.actions';
-import { ILoginState } from '../interfaces/login.interface';
+import { LoginActions } from './login.actions';
+import { ILoginState } from './login.model';
 
-export const loginFeatureKey = 'login';
+export const loginFeatureKey = 'loginState';
 
 export const initialState: ILoginState = {
   token: null,
-  isSuccess: false, 
+  isSuccess: false,
   isError: false,
   isLoading: false,
   error: null,
 };
 
-export const LoginReducer = createReducer(
+export const loginReducer = createReducer(
   initialState,
-  on(
-    LoginActions.getLoginToken,
-    (state: ILoginState, { email, password }) => {
-      return { ...state, isLoading: true, error: null, isError: false, isSuccess: false, token: null }
-    }
-  ),
   on(
     LoginActions.setLoginToken,
     (state: ILoginState, { token, isSuccess, isLoading }) => {
@@ -34,8 +28,8 @@ export const LoginReducer = createReducer(
   ),
   on(
     LoginActions.setLogout,
-    (state: ILoginState) => {
-      return { ...state, isLoading: false, error: null, isError: false, isSuccess: false, token: null }
+    () => {
+      return initialState
     }
   )
 );

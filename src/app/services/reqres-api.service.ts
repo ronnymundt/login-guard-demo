@@ -1,34 +1,29 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { EReqresApiUrl } from '../enums/reqres-api-url.enum';
-import { ILoginEmailPassword, ILoginToken } from '../interfaces/login.interface';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {throwError} from "rxjs";
+import {ILoginEmailPassword, ILoginToken} from '../+state/login';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReqresApiService {
-
+  private readonly baseUrl: string = 'https://reqres.in/api';
   constructor(
     private _httpClient: HttpClient
   ) { }
 
   /**
    * Service liefert login token zurück.
-   * @param email 
-   * @param password 
-   * @returns 
+   * @param email
+   * @param password
+   * @returns
    */
-  public getLoginTokenByEmailPassword$(email: string, password: string): Observable<string> {
-    const data: ILoginEmailPassword = { email: email, password: password };
-    return this._httpClient.post<ILoginToken>(EReqresApiUrl.login, { ...data }).pipe(map(x => x.token));  
-  }
+  public getLoginTokenByEmailPassword$(email: string, password: string){
+    if(password !== '1234ABC') { // simulate invalid password
+      return throwError(() => new HttpErrorResponse({error: 'Invalid Login', status: 401}));
+    }
 
-  /**
-   * Service führt logout aus.
-   * @returns 
-   */
-  public setLogout$(): Observable<{}> {  
-    return this._httpClient.post<{}>(EReqresApiUrl.logout, null);
+    const data: ILoginEmailPassword = { email: email, password: password };
+    return this._httpClient.post<ILoginToken>(`${this.baseUrl}/login`, { ...data });
   }
 }

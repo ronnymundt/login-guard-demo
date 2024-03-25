@@ -1,64 +1,73 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {Component, DestroyRef, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, Subscription } from 'rxjs';
-import { LoginActions } from '../../actions/login.actions';
-import { ILoginEmailPassword, ILoginState } from '../../interfaces/login.interface';
-import { SelectLogin } from '../../selectors/login.selectors';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import {
+  ILoginEmailPassword,
+  ILoginState,
+  LoginActions,
+  SelectLoginError,
+  SelectLoginSuccess
+} from "../../+state/login";
 
 @Component({
-  selector: 'bit-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+    selector: 'bit-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: true,
+    imports: [
+      FormsModule,
+      ReactiveFormsModule,
+      MatFormField,
+      MatLabel,
+      MatInput,
+      MatButton,
+      NgIf,
+      AsyncPipe
+    ]
 })
-export class LoginComponent implements OnInit, OnDestroy {
-  // PRIVATES
-  private _sub: Subscription = Subscription.EMPTY;
-
-  // PUBLICS
+export class LoginComponent implements OnInit {
   public loginForm: FormGroup = new FormGroup('');
-  public isError$ = this._loginStore.select(SelectLogin).pipe(map(x => x.isError));
+  public isError$ = this.loginState.select(SelectLoginError);
 
   constructor(
-    private _loginStore: Store<ILoginState>,
-    private _router: Router,
-    private _fb: FormBuilder
+    private readonly loginState: Store<ILoginState>,
+    private readonly router: Router,
+    private readonly fb: FormBuilder,
+    private readonly destroyRef: DestroyRef
   ) { }
 
-  ngOnDestroy(): void {
-    this._sub.unsubscribe();
+  ngOnInit(): void {
+    this.initForm();
+    this.initSubs();
   }
 
-  ngOnInit(): void {
-    this._initFormGroup();
-    this._initSubscriber();
-  }
-  
-  /**
-  * methode initalisiert die form gruppe
-  */
-  private _initFormGroup(): void {
-    this.loginForm = this._fb.group({
-      email: new FormControl('michael.lawson@reqres.in'),
-      password: new FormControl('1234ABC')
+  private initForm(): void {
+    this.loginForm = this.fb.group({
+      email: ['michael.lawson@reqres.in'],
+      password: ['1234ABC']
     });
   }
 
-  /**
-  * Methode initialisiert die Subscriber.
-  */
-  private _initSubscriber(): void {
-    this._sub = this._loginStore.select(SelectLogin).subscribe(() => this._router.navigate(['home']));
+  private initSubs(): void {
+    this.loginState
+      .select(SelectLoginSuccess)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(async isSuccess => {
+        if (!isSuccess) { return; }
+        await this.router.navigateByUrl('home')
+      });
   }
 
   // EVENTS
 
-  /**
-   * Button onclick event
-   */
   public onLoginClick(): void {
-    const frm = <ILoginEmailPassword>this.loginForm.value; 
-    this._loginStore.dispatch(LoginActions.getLoginToken(frm));    
+    const frm = <ILoginEmailPassword>this.loginForm.value;
+    this.loginState.dispatch(LoginActions.getLoginToken(frm));
   }
 }

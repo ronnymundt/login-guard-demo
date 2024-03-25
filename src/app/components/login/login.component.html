@@ -4,14 +4,24 @@
   <form [formGroup]="loginForm">
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
-      <input matInput placeholder="Email" type="text" formControlName="email">
+      <input
+        matInput placeholder="Email"
+        type="text"
+        formControlName="email">
     </mat-form-field>
     <mat-form-field appearance="fill">
         <mat-label>Password</mat-label>
-        <input matInput placeholder="Password" type="password" formControlName="password">        
+        <input
+          matInput
+          placeholder="Password" 
+          type="password"
+          formControlName="password">
     </mat-form-field>
   </form>
-  <button mat-stroked-button color="primary" (click)="onLoginClick()">Login</button>
+  <button
+    mat-stroked-button
+    color="primary"
+    (click)="onLoginClick()">Login</button>
   <div *ngIf="isError$ | async" class="msg-error">
     <span>Fehler bei der Anmeldung.</span>
   </div>
