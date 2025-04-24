@@ -30,8 +30,8 @@ Bei erfolgreicher Eingabe von Benutzername und Passwort wird der Benutzer auf di
 ## 🚀 Lokales Setup
 
 ```
-git clone https://github.com/ronnymundt/[async-validator-demo].git
-cd [async-validator-demo]
+git clone https://github.com/ronnymundt/login-guard-demo.git
+cd login-guard-demo
 npm install
 ng serve
 ```
