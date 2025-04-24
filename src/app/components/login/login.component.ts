@@ -1,46 +1,53 @@
-import {Component, DestroyRef, OnInit} from '@angular/core';
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, DestroyRef, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { NgIf, AsyncPipe } from '@angular/common';
-import { MatButton } from '@angular/material/button';
-import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { AsyncPipe } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import {
   ILoginEmailPassword,
   ILoginState,
   LoginActions,
   SelectLoginError,
-  SelectLoginSuccess
-} from "../../+state/login";
+  SelectLoginSuccess,
+} from '../../+state/login';
+import { defaultPassword } from '../../configs';
 
 @Component({
-    selector: 'bit-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    standalone: true,
-    imports: [
-      FormsModule,
-      ReactiveFormsModule,
-      MatFormField,
-      MatLabel,
-      MatInput,
-      MatButton,
-      NgIf,
-      AsyncPipe
-    ]
+  selector: 'bit-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    AsyncPipe,
+  ],
 })
 export class LoginComponent implements OnInit {
-  public loginForm: FormGroup = new FormGroup('');
-  public isError$ = this.loginState.select(SelectLoginError);
+  loginForm!: FormGroup;
+  isError$ = this.loginState.select(SelectLoginError);
+  protected readonly defaultPassword = defaultPassword;
 
   constructor(
     private readonly loginState: Store<ILoginState>,
     private readonly router: Router,
     private readonly fb: FormBuilder,
-    private readonly destroyRef: DestroyRef
-  ) { }
+    private readonly destroyRef: DestroyRef,
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -50,7 +57,7 @@ export class LoginComponent implements OnInit {
   private initForm(): void {
     this.loginForm = this.fb.group({
       email: ['michael.lawson@reqres.in'],
-      password: ['1234ABC']
+      password: [],
     });
   }
 
@@ -58,16 +65,16 @@ export class LoginComponent implements OnInit {
     this.loginState
       .select(SelectLoginSuccess)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(async isSuccess => {
-        if (!isSuccess) { return; }
-        await this.router.navigateByUrl('home')
+      .subscribe(async (isSuccess) => {
+        if (!isSuccess) {
+          return;
+        }
+        await this.router.navigateByUrl('home');
       });
   }
 
-  // EVENTS
-
-  public onLoginClick(): void {
-    const frm = <ILoginEmailPassword>this.loginForm.value;
-    this.loginState.dispatch(LoginActions.getLoginToken(frm));
+  onLoginClick(): void {
+    const v = this.loginForm.value as ILoginEmailPassword;
+    this.loginState.dispatch(LoginActions.getLoginToken(v));
   }
 }

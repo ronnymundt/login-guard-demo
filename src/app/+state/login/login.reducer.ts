@@ -17,19 +17,27 @@ export const loginReducer = createReducer(
   on(
     LoginActions.setLoginToken,
     (state: ILoginState, { token, isSuccess, isLoading }) => {
-      return { ...state, token: token, isSuccess: isSuccess, isLoading: isLoading, isError: false, error: null }
-    }
+      return {
+        ...state,
+        token: token,
+        isSuccess: isSuccess,
+        isLoading: isLoading,
+        isError: false,
+        error: null,
+      };
+    },
   ),
-  on(
-    LoginActions.setLoginError,
-    (state: ILoginState, { error }) => {
-      return { ...state, token: null, isSuccess: false, isLoading: false, isError: true, error: error }
-    }
-  ),
-  on(
-    LoginActions.setLogout,
-    () => {
-      return initialState
-    }
-  )
+  on(LoginActions.setLoginError, (state: ILoginState, { error }) => {
+    return {
+      ...state,
+      token: null,
+      isSuccess: false,
+      isLoading: false,
+      isError: true,
+      error: error,
+    };
+  }),
+  on(LoginActions.setLogout, () => {
+    return initialState;
+  }),
 );

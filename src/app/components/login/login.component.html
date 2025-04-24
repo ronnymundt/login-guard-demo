@@ -1,28 +1,47 @@
-<h1>Login Guard Demo</h1>
-<hr>
-<div class="login-wrapper">
-  <form [formGroup]="loginForm">
-    <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input
-        matInput placeholder="Email"
-        type="text"
-        formControlName="email">
-    </mat-form-field>
-    <mat-form-field appearance="fill">
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Login</mat-card-title>
+    <mat-card-subtitle
+      ><p>
+        Bitte melden dich an, um auf die geschützte Seite zuzugreifen.
+      </p></mat-card-subtitle
+    >
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="loginForm" class="login-form">
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          placeholder="Email"
+          type="text"
+          formControlName="email"
+        />
+      </mat-form-field>
+      <mat-form-field>
         <mat-label>Password</mat-label>
         <input
           matInput
-          placeholder="Password" 
+          placeholder="Password"
           type="password"
-          formControlName="password">
-    </mat-form-field>
-  </form>
-  <button
-    mat-stroked-button
-    color="primary"
-    (click)="onLoginClick()">Login</button>
-  <div *ngIf="isError$ | async" class="msg-error">
-    <span>Fehler bei der Anmeldung.</span>
-  </div>
-</div>
+          formControlName="password"
+        />
+      </mat-form-field>
+    </form>
+    <button mat-stroked-button color="primary" (click)="onLoginClick()">
+      Login
+    </button>
+    @if (isError$ | async) {
+      <section class="msg-error">
+        <span>Fehler bei der Anmeldung.</span>
+      </section>
+    }
+  </mat-card-content>
+  <mat-card-footer>
+    <p>Anmeldeinformationen</p>
+    <ul>
+      <li>Email: michael.lawson&#64;reqres.in</li>
+      <li>Password: {{ defaultPassword }}</li>
+    </ul>
+  </mat-card-footer>
+</mat-card>
